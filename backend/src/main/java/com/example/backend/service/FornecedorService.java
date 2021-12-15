@@ -27,14 +27,6 @@ public class FornecedorService {
             .orElseThrow(() -> new FornecedorNaoEncontradoException(fornecedorId));
   }
 
-  public Fornecedor atualizar(Long fornecedorId, Fornecedor fornecedor) {
-    Fornecedor fornecedorAtual = buscarOuFalhar(fornecedorId);
-    
-    fornecedorAtual.setNome(fornecedor.getNome());
-    
-    return fornecedorRepository.save(fornecedorAtual);
-  }
-
   public void remover(Long fornecedorId) {
     Fornecedor fornecedor = buscarOuFalhar(fornecedorId);
     fornecedorRepository.delete(fornecedor);

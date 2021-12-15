@@ -8,6 +8,6 @@ public class FornecedorNaoEncontradoException extends EntidadeNaoEncontradaExcep
   }
 
   public FornecedorNaoEncontradoException(Long estadoId) {
-    this("Não existe um cadastro de cidade com código " + estadoId);
+    this("Não existe um cadastro de fornecedor com código " + estadoId);
   }
 }

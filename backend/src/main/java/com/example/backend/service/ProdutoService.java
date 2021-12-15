@@ -5,6 +5,7 @@ import com.example.backend.model.Produto;
 import com.example.backend.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,12 +14,20 @@ import java.util.List;
 public class ProdutoService {
 
   private final ProdutoRepository produtoRepository;
+  private final FornecedorService fornecedorService;
+  private final TipoProdutoService tipoProdutoService;
 
   public List<Produto> listar() {
     return produtoRepository.findAll();
   }
 
+  @Transactional
   public Produto adicionar(Produto produto) {
+    var fornecedorId = produto.getFornecedor().getId();
+    var tipoProdutoId = produto.getTipoProduto().getId();
+    produto.setFornecedor(fornecedorService.buscarOuFalhar(fornecedorId));
+    produto.setTipoProduto(tipoProdutoService.buscarOuFalhar(tipoProdutoId));
+
     return produtoRepository.save(produto);
   }
 
@@ -27,19 +36,9 @@ public class ProdutoService {
             .orElseThrow(() -> new ProdutoNaoEncontradoException(produtoId));
   }
 
-  public Produto atualizar(Long produtoId, Produto produto) {
-    Produto produtoAtual = buscarOuFalhar(produtoId);
-    
-    produtoAtual.setNome(produto.getNome());
-    produtoAtual.setPrecoCompra(produto.getPrecoCompra());
-    produtoAtual.setPrecoVenda(produto.getPrecoVenda());
-    
-    return produtoRepository.save(produtoAtual);
-  }
-
   public void remover(Long produtoId) {
     Produto produto = buscarOuFalhar(produtoId);
     produtoRepository.delete(produto);
   }
-  
+
 }

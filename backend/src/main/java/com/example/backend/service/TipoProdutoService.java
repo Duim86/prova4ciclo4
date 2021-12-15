@@ -27,14 +27,8 @@ public class TipoProdutoService {
             .orElseThrow(() -> new TipoProdutoNaoEncontradoException(tipoProdutoId));
   }
 
-  public TipoProduto atualizar(Long tipoProdutoId, TipoProduto tipoProduto) {
-    TipoProduto tipoProdutoAtual = buscarOuFalhar(tipoProdutoId);
-    tipoProdutoAtual.setNome(tipoProduto.getNome());
-    return tipoProdutoRepository.save(tipoProdutoAtual);
-  }
-
   public void remover(Long tipoProdutoId) {
-    TipoProduto tipoProduto = buscarOuFalhar(tipoProdutoId);
+    var tipoProduto = buscarOuFalhar(tipoProdutoId);
     tipoProdutoRepository.delete(tipoProduto);
   }
   

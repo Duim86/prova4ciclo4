@@ -14,6 +14,6 @@ public class TipoProduto {
   private Long id;
   private String nome;
 
-  @OneToMany
+  @OneToMany(mappedBy = "tipoProduto")
   private List<Produto> produtoLista;
 }

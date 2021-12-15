@@ -1,11 +1,16 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.TipoProduto;
+import com.example.backend.dtos.assembler.TipoProdutoModelAssembler;
+import com.example.backend.dtos.disassembler.TipoProdutoInputDisassembler;
+import com.example.backend.dtos.input.TipoProdutoInput;
+import com.example.backend.dtos.model.TipoProdutoListModel;
+import com.example.backend.dtos.model.TipoProdutoModel;
 import com.example.backend.service.TipoProdutoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -14,29 +19,35 @@ import java.util.List;
 public class TipoProdutoController {
 
   private final TipoProdutoService tipoProdutoService;
+  private final TipoProdutoModelAssembler tipoProdutoModelAssembler;
+  private final TipoProdutoInputDisassembler tipoProdutoInputDisassembler;
 
   @GetMapping()
   @ResponseStatus(HttpStatus.OK)
-  public List<TipoProduto> listar() {
-    return tipoProdutoService.listar();
+  public List<TipoProdutoListModel> listar() {
+    return tipoProdutoModelAssembler.toCollectionModel(tipoProdutoService.listar());
   }
 
   @GetMapping("/{tipoProdutoId}")
   @ResponseStatus(HttpStatus.OK)
-  public TipoProduto buscar(@PathVariable Long tipoProdutoId) {
-    return tipoProdutoService.buscarOuFalhar(tipoProdutoId);
+  public TipoProdutoModel buscar(@PathVariable Long tipoProdutoId) {
+    return tipoProdutoModelAssembler.toModel(tipoProdutoService.buscarOuFalhar(tipoProdutoId));
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public TipoProduto adicionar(@RequestBody TipoProduto tipoProduto) {
-    return tipoProdutoService.adicionar(tipoProduto);
+  public TipoProdutoModel adicionar(@RequestBody @Valid TipoProdutoInput tipoProdutoInput) {
+    var tipoProduto = tipoProdutoInputDisassembler.toDomainObject(tipoProdutoInput);
+    return tipoProdutoModelAssembler.toModel(tipoProdutoService.adicionar(tipoProduto));
   }
 
   @PutMapping("/{tipoProdutoId}")
-  public TipoProduto atualizar(@PathVariable Long tipoProdutoId,
-                           @RequestBody TipoProduto tipoProduto){
-    return tipoProdutoService.atualizar(tipoProdutoId, tipoProduto);
+  public TipoProdutoModel atualizar(@PathVariable Long tipoProdutoId,
+                           @RequestBody @Valid TipoProdutoInput tipoProdutoInput){
+    var tipoProdutoAtual = tipoProdutoService.buscarOuFalhar(tipoProdutoId);
+    tipoProdutoInputDisassembler.copyToDomainObject(tipoProdutoInput, tipoProdutoAtual);
+
+    return tipoProdutoModelAssembler.toModel(tipoProdutoService.adicionar(tipoProdutoAtual));
   }
 
   @DeleteMapping("/{tipoProdutoId}")

@@ -1,2 +1,27 @@
-package com.example.backend.model;public class Produto {
+package com.example.backend.model;
+
+import lombok.Data;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+
+@Entity
+@Data
+public class Produto {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String nome;
+
+  private BigDecimal precoVenda;
+  private BigDecimal precoCompra;
+
+  @ManyToOne
+  private Fornecedor fornecedor;
+
+  @ManyToOne
+  private TipoProduto tipoProduto;
 }
+
+

@@ -25,8 +25,8 @@ public class FornecedorModelAssembler {
     return modelMapper.map(fornecedor, FornecedorListModel.class);
   }
 
-  public List<FornecedorListModel> toCollectionModel(List<Fornecedor> fornecedors){
-    return fornecedors.stream()
+  public List<FornecedorListModel> toCollectionModel(List<Fornecedor> fornecedores){
+    return fornecedores.stream()
             .map(this::toModelList)
             .collect(Collectors.toList());
   }

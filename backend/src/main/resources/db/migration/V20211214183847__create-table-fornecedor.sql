@@ -1,6 +1,6 @@
 create table fornecedor
 (
-    id   bigint      not null auto_increment,
+    id   bigserial    not null,
     nome varchar(150) not null,
     primary key (id)
 );

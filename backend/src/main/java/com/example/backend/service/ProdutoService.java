@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.exception.NegocioException;
 import com.example.backend.exception.ProdutoNaoEncontradoException;
 import com.example.backend.model.Produto;
 import com.example.backend.repository.ProdutoRepository;
@@ -53,7 +54,7 @@ public class ProdutoService {
   public void removerEstoque(Long produtoId, Integer quantidade) {
     var produto = buscarOuFalhar(produtoId);
     if(produto.getQuantidade() < quantidade) {
-      throw new IllegalStateException("Quantidade maior que disponivel no estoque");
+      throw new NegocioException("Quantidade maior que disponivel no estoque");
     }
 
     produto.setQuantidade(produto.getQuantidade() - quantidade);

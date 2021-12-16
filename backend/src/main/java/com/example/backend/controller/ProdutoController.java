@@ -5,6 +5,8 @@ import com.example.backend.dtos.disassembler.ProdutoInputDisassembler;
 import com.example.backend.dtos.input.ProdutoInput;
 import com.example.backend.dtos.model.ProdutoListModel;
 import com.example.backend.dtos.model.ProdutoModel;
+import com.example.backend.model.Fornecedor;
+import com.example.backend.model.TipoProduto;
 import com.example.backend.service.ProdutoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/produtos")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProdutoController {
 
   private final ProdutoService produtoService;
@@ -45,6 +48,8 @@ public class ProdutoController {
   public ProdutoModel atualizar(@PathVariable Long produtoId,
                            @RequestBody @Valid ProdutoInput produtoInput){
     var produtoAtual = produtoService.buscarOuFalhar(produtoId);
+    produtoAtual.setTipoProduto(new TipoProduto());
+    produtoAtual.setFornecedor(new Fornecedor());
     produtoInputDisassembler.copyToDomainObject(produtoInput, produtoAtual);
 
     return produtoModelAssembler.toModel(produtoService.adicionar(produtoAtual));
@@ -54,5 +59,17 @@ public class ProdutoController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void remover(@PathVariable Long produtoId) {
     produtoService.remover(produtoId);
+  }
+
+  @PutMapping("/{produtoId}/adicionarEstoque")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void adicionarEstoque(@PathVariable Long produtoId, @RequestBody Integer quantidade) {
+    produtoService.adicionarEstoque(produtoId, quantidade);
+  }
+
+  @PutMapping("/{produtoId}/removerEstoque")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void removerEstoque(@PathVariable Long produtoId, @RequestBody Integer quantidade) {
+    produtoService.removerEstoque(produtoId, quantidade);
   }
 }

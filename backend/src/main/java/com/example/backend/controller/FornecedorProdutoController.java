@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/fornecedores/{fornecedorId}/produtos")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FornecedorProdutoController {
 
   private final ProdutoRepository produtoRepository;

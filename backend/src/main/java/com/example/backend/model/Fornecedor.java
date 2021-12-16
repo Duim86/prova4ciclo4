@@ -13,7 +13,4 @@ public class Fornecedor {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String nome;
-
-  @OneToMany(mappedBy = "fornecedor")
-  private List<Produto> produtoLista;
 }

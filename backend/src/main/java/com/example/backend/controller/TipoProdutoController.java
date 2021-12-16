@@ -15,7 +15,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tipoProdutos")
+@RequestMapping("/tiposProduto")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TipoProdutoController {
 
   private final TipoProdutoService tipoProdutoService;

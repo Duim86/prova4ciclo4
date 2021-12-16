@@ -25,8 +25,10 @@ public class ProdutoService {
   public Produto adicionar(Produto produto) {
     var fornecedorId = produto.getFornecedor().getId();
     var tipoProdutoId = produto.getTipoProduto().getId();
-    produto.setFornecedor(fornecedorService.buscarOuFalhar(fornecedorId));
-    produto.setTipoProduto(tipoProdutoService.buscarOuFalhar(tipoProdutoId));
+    var fornecedor = fornecedorService.buscarOuFalhar(fornecedorId);
+    var tipoProduto = tipoProdutoService.buscarOuFalhar(tipoProdutoId);
+    produto.setFornecedor(fornecedor);
+    produto.setTipoProduto(tipoProduto);
 
     return produtoRepository.save(produto);
   }
@@ -41,4 +43,19 @@ public class ProdutoService {
     produtoRepository.delete(produto);
   }
 
+  @Transactional
+  public void adicionarEstoque(Long produtoId, Integer quantidade) {
+    var produto = buscarOuFalhar(produtoId);
+    produto.setQuantidade(produto.getQuantidade() + quantidade);
+  }
+
+  @Transactional
+  public void removerEstoque(Long produtoId, Integer quantidade) {
+    var produto = buscarOuFalhar(produtoId);
+    if(produto.getQuantidade() < quantidade) {
+      throw new IllegalStateException("Quantidade maior que disponivel no estoque");
+    }
+
+    produto.setQuantidade(produto.getQuantidade() - quantidade);
+  }
 }

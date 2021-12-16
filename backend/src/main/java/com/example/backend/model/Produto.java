@@ -17,6 +17,8 @@ public class Produto {
   private BigDecimal precoVenda;
   private BigDecimal precoCompra;
 
+  private Integer quantidade = 0;
+
   @ManyToOne
   private Fornecedor fornecedor;
 

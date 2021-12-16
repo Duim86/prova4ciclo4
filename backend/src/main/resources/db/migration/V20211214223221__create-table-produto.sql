@@ -5,6 +5,8 @@ create table produto
     preco_venda     decimal(10, 2) not null,
     preco_compra    decimal(10, 2) not null,
 
+    quantidade      integer        not null default 0,
+
     fornecedor_id   bigserial      not null,
     tipo_produto_id bigserial      not null,
 

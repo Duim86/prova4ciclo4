@@ -21,7 +21,18 @@ function DetalhesTipoProduto() {
 
   const navigate = useNavigate();
 
+  class NumberException {
+    constructor(message) {
+      this.message = message;
+      this.name = "NumberException";
+    }
+  }
+
   function adicionarEstoque() {
+    if(Number(quantidade) <= 0) {
+      alert('Número inválido')
+      throw new NumberException("Número inválido")
+    } 
     api.put(`/produtos/${params.id}/adicionarEstoque`, JSON.parse(Number(quantidade)), {
       headers: {
           'Content-Type': 'application/json',
@@ -37,6 +48,10 @@ function DetalhesTipoProduto() {
   }
 
   function removerEstoque() {
+    if(Number(quantidade) <= 0) {
+      alert('Número inválido')
+      throw new NumberException("Número inválido")
+    } 
     api.put(`/produtos/${params.id}/removerEstoque`, JSON.parse(Number(quantidade)), {
       headers: {
           'Content-Type': 'application/json',

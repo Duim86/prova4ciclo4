@@ -5,9 +5,9 @@ function Header() {
           <ul className="nav nav-tabs">
               <li className="nav-item d-flex">
                   <a aria-current="page" className="nav-link" href="/">Home</a>
-                  <a aria-current="page" className="nav-link" href="/fornecedor">Fornecedor</a>
+                  <a id="id-fornecedor" aria-current="page" className="nav-link" href="/fornecedor">Fornecedor</a>
                   <a aria-current="page" className="nav-link" href="/produto">Produto</a>
-                  <a aria-current="page" className="nav-link" href="/tiposProduto">Tipo Produto</a>
+                  <a id="id-tipoProduto" aria-current="page" className="nav-link" href="/tiposProduto">Tipo Produto</a>
               </li>
           </ul>
       </div>
